@@ -65,6 +65,31 @@ map("n", "<C-`>", ":ToggleTerm<CR>", opts)       -- Plugin toggleterm.nvim
 map("n", "<C-f>", ":FzfLua live_grep<CR>", opts) -- Buscar no projeto
 map("n", "<C-h>", ":%s///g<Left><Left>", opts) -- Replace interativo
 
+-- Start Compiler 
+map("n", "<C-CR>", ":w<CR>:!python3 %<CR>", opts)
+map("n", "<leader>r", ":w<CR>:!python3 %<CR>", opts)
+
+
+-- Create File
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set("n", "<leader>mk", function()
+  vim.ui.input({ prompt = "Nome do arquivo: " }, function(input)
+    if input and input ~= "" then
+      vim.cmd("edit " .. input)
+    end
+  end)
+end, { noremap = true, silent = true })
+
+
+-- Create Project (Project Stetup 2.0)
+local path_app = "C:/Users/gustavoquitto-ieg/Downloads/scripts/ProjectSetup-2.0_nvim/index.py"
+
+vim.keymap.set("n", "<leader>ps2", function()
+  vim.cmd("split | terminal cmd /c python " .. path_app)
+end, { noremap = true, silent = true })
+
 --Plugins
 
 -- Cmd
@@ -77,3 +102,17 @@ vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("v", "<C-c>", '"+y', { noremap = true, silent = true })
 
+
+-- lsp
+map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+
+-- git sings
+map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<CR>", opts)
+map("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<CR>", opts)
+map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<CR>", opts)
+map("n", "]g", "<cmd>Gitsigns next_hunk<CR>", opts)
+map("n", "[g", "<cmd>Gitsigns prev_hunk<CR>", opts)

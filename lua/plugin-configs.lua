@@ -6,9 +6,9 @@ require("lazy").setup({
     "Mofiqul/vscode.nvim",
     lazy = false,
     priority = 1000,
+    icons_enabled = true,
     config = function()
-      require("vscode").setup({})
-      vim.cmd([[colorscheme vscode]])
+      vim.cmd.colorscheme("vscode")
     end,
   },
 
@@ -190,34 +190,6 @@ require("lazy").setup({
     end,
   },
 
-  -- REST client
-  {
-    "rest-nvim/rest.nvim",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter"
-    },
-  },
-
-   -- Toggle f-string Python
-  {
-    "roobert/f-string-toggle.nvim",
-    config = function()
-      require("f-string-toggle").setup({
-        key_binding = "<leader>f",
-        key_binding_desc = "Toggle f-string",
-        filetypes = { "python" },
-      })
-    end,
-  },
-
-  -- TypeScript checker
-  {
-    "dmmulroy/tsc.nvim",
-    config = function()
-      require("tsc").setup({})
-    end,
-  },
-
   -- REST Client
   {
     "rest-nvim/rest.nvim",
@@ -281,6 +253,7 @@ require("lazy").setup({
         }),
       })
     end,
+    
   },
 
   -- Mason
@@ -319,17 +292,20 @@ require("lazy").setup({
 
   -- Null-ls para lint/format externo
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     config = function()
       local null_ls = require("null-ls")
+
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.black,
+          null_ls.builtins.diagnostics.eslint,
         },
       })
     end,
   },
+
+
 
   -- LSP Config
   {
