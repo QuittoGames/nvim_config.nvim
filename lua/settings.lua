@@ -3,7 +3,7 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
 vim.g.mapleader = " "
 
-
+   
 vim.o.number = true
 vim.o.mouse = 'a'
 vim.o.showmode = true

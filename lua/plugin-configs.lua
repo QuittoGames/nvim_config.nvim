@@ -18,6 +18,7 @@ require("lazy").setup({
   {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
+    transparent_background = true,
     priority = 1000,
   },
 
@@ -36,6 +37,14 @@ require("lazy").setup({
         conditionals = { "bold" },
       },
     })
+  end,
+},
+
+-- Perfomace
+{
+  "lewis6991/impatient.nvim",
+  config = function()
+    require("impatient")
   end,
 },
 
@@ -296,35 +305,56 @@ require("lazy").setup({
   },
 
   -- LSP básico
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-      )
-      local lspconfig = require("lspconfig")
-      lspconfig.pyright.setup({ capabilities = capabilities })
-      lspconfig.jdtls.setup({ capabilities = capabilities }) -- Java
+{
+  "neovim/nvim-lspconfig",
+  config = function()
+    local capabilities = require("cmp_nvim_lsp").default_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+    local lspconfig = require("lspconfig")
 
-      -- Keymaps
-      local on_attach = function(_, bufnr)
-        local bufmap = function(mode, lhs, rhs)
-          vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, { noremap = true, silent = true })
-        end
-        bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-        bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-        bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-        bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-        bufmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-        bufmap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-        bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-        bufmap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>")
-        bufmap("n", "<leader>ds", "<cmd>lua vim.diagnostic.open_float()<CR>")
-        bufmap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
-        bufmap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+    -- PYTHON
+    lspconfig.pyright.setup({
+      capabilities = capabilities,
+    })
+
+    -- JAVA
+    -- ⚠️ jdtls normalmente precisa ser iniciado manualmente por projeto com root_dir, mas deixei básico aqui
+    lspconfig.jdtls.setup({
+      capabilities = capabilities,
+    })
+
+    -- C / C++
+    lspconfig.clangd.setup({
+      capabilities = capabilities,
+    })
+
+    -- C#
+    lspconfig.omnisharp.setup({
+      capabilities = capabilities,
+      cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+    })
+
+    -- Keymaps
+    local on_attach = function(_, bufnr)
+      local bufmap = function(mode, lhs, rhs)
+        vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, { noremap = true, silent = true })
       end
-    end,
-  },
+      bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+      bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
+      bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+      bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
+      bufmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+      bufmap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
+      bufmap("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+      bufmap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>")
+      bufmap("n", "<leader>ds", "<cmd>lua vim.diagnostic.open_float()<CR>")
+      bufmap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+      bufmap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+    end
+  end,
+},
+
 
   -- REST Client
   {
@@ -405,7 +435,26 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "pyright", "lua_ls", "tsserver", "jdtls" },
+        ensure_installed = {
+          ensure_installed = {
+            -- Já mencionados
+            "html", "cssls", "emmet_ls", "tsserver", "jsonls", "eslint",
+            "pyright", "jdtls", "gopls", "rust_analyzer", "clangd", "omnisharp", "lua_ls",
+            "bashls", "dockerls", "marksman", "yamlls",
+            "sqlls", "hls", "ocamllsp", "elmls",
+            "r_language_server", "julials",
+            "dartls", "kotlin_language_server",
+            "powershell_es", "perl_ls", "vimls",
+
+            -- Extras úteis
+            "clojure_lsp", "fsautocomplete", "nimls", "vls", "zls",
+            "texlab", "ltex", "lemminx",
+            "ansiblels", "terraformls", "tflint",
+            "ruff_lsp", "jedi_language_server",
+            "vale_ls", "stylelint_lsp",
+}
+
+        }
       })
     end,
   },

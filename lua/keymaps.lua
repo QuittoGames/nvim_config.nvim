@@ -122,7 +122,7 @@ end, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>t", "<cmd>NeatermToggle<CR>", { noremap = true, silent = true })
 
 -- Keympas Vscode
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+vim.keymap.set("n"  , "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
