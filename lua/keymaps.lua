@@ -34,6 +34,9 @@ map("i", "<C-S-Right>", "<C-o>ve", opts)
 
 -- Ctrl + A (selecionar tudo)
 map("n", "<C-a>", "ggVG", opts)
+map("v", "<C-a>", "<Esc>ggVG", opts)
+map("i", "<C-a>", "<C-o>ggVG", opts)
+
 
 -- Ctrl + C (copiar seleção para clipboard do sistema)
 map("v", "<C-c>", '"+y', opts)
@@ -69,6 +72,29 @@ map("n", "<C-h>", ":%s///g<Left><Left>", opts) -- Replace interativo
 map("n", "<C-CR>", ":w<CR>:!python3 %<CR>", opts)
 map("n", "<leader>r", ":w<CR>:!python3 %<CR>", opts)
 
+-- Tab
+-- Indentar pra direita e manter seleção
+vim.keymap.set("v", "<Tab>", ">gv", { noremap = true, silent = true })
+
+-- Indentar pra esquerda e manter seleção
+vim.keymap.set("v", "<S-Tab>", "<gv", { noremap = true, silent = true })
+
+
+-- Split window
+vim.keymap.set("n", "<leader>sv", "<C-w>v") -- vertical
+vim.keymap.set("n", "<leader>sh", "<C-w>s") -- horizontal
+
+-- Trocar entre janelas
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+
+
+-- Comentário rápido
+vim.keymap.set("n", "<leader>/", function()
+  require("Comment.api").toggle.linewise.current()
+end)
 
 -- Create File
 local map = vim.api.nvim_set_keymap
@@ -99,8 +125,6 @@ vim.keymap.set("n", "<leader>t", "<cmd>NeatermToggle<CR>", { noremap = true, sil
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
-vim.keymap.set("v", "<C-c>", '"+y', { noremap = true, silent = true })
 
 
 -- lsp

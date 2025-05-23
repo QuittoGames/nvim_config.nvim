@@ -9,6 +9,4 @@ require("config.lazy")
 require("config.dashboard-nvim")
 -- require("cyberdream.config")    
 
-vim.g.mapleader = " "  -- usa a barra de espaço como leader, é comum
-
 return {}

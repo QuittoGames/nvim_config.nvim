@@ -1,5 +1,7 @@
 vim.o.background = "dark" -- "dark" ou "light"
 
+require("tool")
+
 require("lazy").setup({
   -- Tema VSCode
   {
@@ -12,16 +14,150 @@ require("lazy").setup({
     end,
   },
 
-  -- Barra de status
+  -- Theme 2
   {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+
+  -- Theme 3
+  {
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
+  config = function()
+    require("catppuccin").setup({
+      flavour = "mocha", -- mocha, macchiato, frappe, latte
+      transparent_background = true,
+      term_colors = true,
+      styles = {
+        comments = { "italic" } ,
+        conditionals = { "bold" },
+      },
+    })
+  end,
+},
+
+  -- Barra de status
+{
+  "nvim-lualine/lualine.nvim",
+  requires = { "nvim-tree/nvim-web-devicons", opt = true },
+  config = function()
+    local colors = {
+      normal = "#8aadf4",
+      insert = "#a6da95",
+      visual = "#ee99a0",
+      replace = "#f7768e",
+      command = "#ff9e64",
+      inactive = "#44475a",
+      branch = "#f5a97f",
+      filename = "#c6a0f6",
+      filetype = "#9ccfd8",
+    }
+
+    require('lualine').setup({
+      options = {
+        theme = "catppuccin",
+        icons_enabled = true,
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
+        globalstatus = true,
+      },
+      sections = {
+        lualine_a = {
+          {
+            "mode",
+            fmt = function(str)
+              return str:sub(1,1)
+            end,
+            color = function()
+              local mode_color = {
+                n = colors.normal,
+                i = colors.insert,
+                v = colors.visual,
+                V = colors.visual,
+                R = colors.replace,
+                c = colors.command,
+              }
+              return { fg = mode_color[vim.fn.mode()] or colors.normal, gui = "bold" }
+            end,
+          }
+        },
+        lualine_b = {
+          {
+            "branch",
+            color = { fg = colors.branch, gui = "bold" },
+            icon = "",
+          }
+        },
+        lualine_c = {
+          {
+            "filename",
+            file_status = true,
+            path = 1, -- relative path
+            color = { fg = colors.filename, gui = "bold" },
+          }
+        },
+        lualine_x = {
+          {
+            "filetype",
+            colored = true,
+            color = { fg = colors.filetype, gui = "bold" },
+          }
+        },
+        lualine_y = { "progress" },
+        lualine_z = {"location"},
+        lualine_y = {
+        "progress",
+        {
+          function() return "☕" end,
+          color = { fg = "#ff9900", gui = "bold" },
+        },
+        {
+          function() return "NVIM" end,
+          color = { fg = "#00ffcc", gui = "bold" },
+        },
+      },
+
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { "filename" },
+        lualine_x = { "location" },
+        lualine_y = {},
+        lualine_z = {},
+      },
+    })
+  end,
+},
+
+
+
+  {
+    "kylechui/nvim-surround",
+    event = "VeryLazy",
     config = function()
-      require("lualine").setup({
-        options = { theme = "vscode" },
-      })
+      require("nvim-surround").setup({})
     end,
   },
+
+  --Comment
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup()
+    end,
+  },
+
+  {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup({})
+    end,
+  },
+
 
   -- Notificações e UI melhorada
   {
